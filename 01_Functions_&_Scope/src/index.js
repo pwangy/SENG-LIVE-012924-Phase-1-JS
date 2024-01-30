@@ -1,4 +1,5 @@
 //Data 
+
 const inventory = [
   {
     id: 1,
@@ -70,49 +71,107 @@ const inventory = [
 create a formatPrice(price) function that accepts a price (number) as an argument 
 and returns the price formatted as a string. formatPrice(10) => '$10.00'
 */
+// Function Declaration
+function formatPrice(price) { // signature line
+  return `$${price.toFixed(2)}`
+}
+
 
 // Start here!
 
 //! 💡 Arrow functions vs regular functions
 
-// ✅ create an arrow function version of the formatPrice function
+// ✅ create an arrow function EXPRESSION version of the formatPrice function
+const formatPrice2 = (price) => { // signature line
+  return `$${price.toFixed(2)}`
+}
+// console.log(formatPrice(29))
+
+const formatPrice3 = (price) => `$${price.toFixed(2)}` // inline immediate return
+console.log(this)
+
+// 1. Readability / Conciseness
+// 2. Immediate Implicit Return when staying inline without {}
+// 3. Does not get hoisted (lifted up to the top of their scope during the creation phase)
+// 4. Different value for 'this'
+
 
 // ✅ create a blurb() function that accepts a book as an argument and logs a message in the following format:
 // 'Eloquent JavaScript: A Modern Introduction to Programming by Marjin Haverbeke is on sale for $10.00'
 
 //! 💡 Scope
+// 1. Global (aka anything outside of a function, loop, in general body {})
+// 2. Local - Functional
+// 3. Block -> let & const -> have a smaller scope than var
 
-function scopey() {
+scopey()
+function scopey() { // all fn declarations get hoisted
     //! Define four local/functional variables (available anywhere within the function FROM THIS LINE UNDER ⚠️)
-    var a = "first Value";
-    let b = "first Value";
-    const c = "first Value";
+    var a = "first Value"; // functional scope
+    let b = "first Value"; // block scope
+    const c = "first Value"; // block scope
+    d = "The worst evil one" // functional scope
   
     if (true) {
     //! Define four block-scoped variables (only available within the block)
       var a = "second Value";
       let b = "second Value";
       const c = "second Value";
+      d = 'second value'
     }
     
     // what will each statement log to the console?
     console.log("a (var) is,", a);
     console.log("b (let) is,", b);
     console.log("c (const) is,", c);
+    console.log("d (evil global) is,", d);
 }
 
 // After Break
 
-// ✅ Create a function called `log` that takes a function and its argument as arguments
-// and logs a message explaining the name of the function, the argument passed and 
-// the return value 
+// calculateTotal is called a Higher Order Function
+// applyDiscount is a fn passed in as argument to another fn and its execution is delayed in time -> CALLBACK
+function calculateTotal(total, applyDiscount) {
+  total - applyDiscount(total)
+}
+// calculateTotal2 is called a Higher Order Function
+// CLOSURE - is a fn passed in as argument to another function and later exposed/returned. This allows the closure to keep a memory of the entire lexical scope!
+
+function calculateTotal2(total, applyDiscount) {
+  console.log(total - applyDiscount(total))
+  let test = "test"
+  return applyDiscount
+}
+
+let returnedFn = calculateTotal2(22, () => {})
+returnedFn()
 
 //! 💡 Practice using callbacks for iteration
+// forEach, map, filter, find
 
-// ✅ Print out each book name in our inventory
-
-// ✅ Create an array of strings from the inventory in the following format:
-// 'Eloquent JavaScript: A Modern Introduction to Programming by Marjin Haverbeke is on sale for $10.00'
-
-// ✅ Find all the books with price over $25.00 
 //! 💡 When do I use forEach vs map?
+
+//! forEach -> does not care about returning but rather doing/creating/printing and returns undefined
+inventory.forEach(function(currentBook){
+    console.log(currentBook)
+})
+
+//! map -> I need to create a new array, populate it and then return it. DO NOT FORGET TO RETURN SOMETHING INSIDE THE CALLBACK BODY
+
+inventory.map(function(currentBook){
+    console.log(currentBook.title)
+})
+
+//! Create the callback in the global scope and then pass a reference to whoever needs it
+function reuseMe(currentBook){
+    return currentBook.title
+}
+
+inventory.map(reuseMe)
+
+
+//! Alternative to map with for loop
+const finalArray = [];
+for(let i = 0; i < inventory.length; i++) {
+    finalArray.push(inventory[i].title)
+}

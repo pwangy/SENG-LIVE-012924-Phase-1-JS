@@ -1,0 +1,7 @@
+JS Notes
+
+Allow websites to be interactive (while html provides structure, css provieds styles)
+Just-in-time compiled, is performance optimized. somewehre btn interperated and compiled
+~ 1995
+Dynamically typed
+

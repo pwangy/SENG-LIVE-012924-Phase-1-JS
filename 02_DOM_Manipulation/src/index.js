@@ -19,11 +19,14 @@ function formatPrice(price) {
 
 // TODO CRUD
 
+// TODO 💡 Create a new DOM element of your choice and add it to the page
+
 // TODO 💡 Create a function that sets the text content of the header to the bookstore name.
 
 // TODO 💡 Create a function that grabs all the divs from the footer and render the bookstore name, address, and hours
 
 // TODO 💡 Remove an element of your choice from the DOM
+
 
 // TODO 💡 Exercise After Break
 // create a function called renderBook(book)

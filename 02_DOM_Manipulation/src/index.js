@@ -1,6 +1,8 @@
 //* BookStore has been moved to data.js
 console.log(bookStore);
 
+// test
+
 //* Code from previous lecture
 
 function formatPrice(price) {

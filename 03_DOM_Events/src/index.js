@@ -80,7 +80,7 @@ bookStore.inventory.forEach(bookObj => renderBookAsHTML(bookObj))
 ////////////////////////////////////////////////////////////////
 //! Generic Syntax For Attaching Event Listeners
 
-// domNodeElement.addEventListener(theEventInStringformat, callbackFunctionThatDesidesWhatToDo)
+// domNodeElement.addEventListener(theEventInStringformat, callbackFunctionThatDesidesWhatToDo, optionalTrueBooleanHere)
 
 //! Suggestions When Working With the DOM
 

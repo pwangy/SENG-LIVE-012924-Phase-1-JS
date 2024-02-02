@@ -42,6 +42,7 @@ function changeHeader() {
     h1.innerText = "A new name"
 }
 function renderBook(book) {
+    console.log('f')
     const li = document.createElement("li")
     li.className = "list-li"
     const h3 = document.createElement("h3")
@@ -131,3 +132,34 @@ bookForm.addEventListener('submit', handleSubmit)
 //! sure we still see the books and store details
 
 ////////////////////////////////////////////////////////////////
+
+const baseUrl = 'http://localhost:3000/'
+
+const fetchStoreData = () => {
+    fetch(`${baseUrl}stores/1`)
+    .then(resp => resp.json())
+    .then(jsonData => {
+        setHeader(jsonData)
+        changeFooter(jsonData)
+    })
+    .catch(error => alert(error))
+}
+
+console.log('a')
+const fetchBooks = () => {
+    console.log('b')
+    fetch(`${baseUrl}books`) //! automatically fires a GET req
+    .then(resp => {
+        console.log('c')
+        return resp.json()
+    })
+    .then(books => books.forEach(book => renderBook(book)))
+    .catch(error => alert(error))
+    console.log('d')
+}
+
+console.log('e')
+
+fetchStoreData()
+fetchBooks()
+

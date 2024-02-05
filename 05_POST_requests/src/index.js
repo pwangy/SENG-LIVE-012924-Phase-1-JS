@@ -1,6 +1,8 @@
 //////////////////////////////////////////////////////////
 // Fetch Data & Call render functions to populate the DOM
 //////////////////////////////////////////////////////////
+const booksUrl = 'http://localhost:3000/books'
+const booksUl = document.querySelector('#book-list')
 getJSON('http://localhost:3000/stores')
   .then((stores) => {
     // this populates a select tag with options so we can switch between stores on our web page
@@ -9,12 +11,12 @@ getJSON('http://localhost:3000/stores')
     renderFooter(stores[0])
   })
   .catch(err => {
-    console.error(err);
-    // renderError('Make sure to start json-server!') // I'm skipping this so we only see this error message once if JSON-server is actually not running
+    // console.error(err);
+    renderError(err) // I'm skipping this so we only see this error message once if JSON-server is actually not running
   });
 
 // load all the books and render them
-getJSON("http://localhost:3000/books")
+getJSON(booksUrl)
   .then((books) => {
     books.forEach(book => renderBook(book))
   })
@@ -99,7 +101,7 @@ function renderBook(book) {
   })
 
   li.append(h3, pAuthor, pPrice, pStock, img, btn);
-  document.querySelector('#book-list').append(li);
+  booksUl.append(li);
 }
 
 function renderError(error) {
@@ -194,10 +196,18 @@ window.addEventListener('keydown', (e) => {
 //   imageUrl: 'https://images-na.ssl-images-amazon.com/images/I/51IKycqTPUL._SX218_BO1,204,203,200_QL40_FMwebp_.jpg'
 // }
 // we can use a book as an argument for renderBook!  This will add the book's info to the webpage.
+// HTTP Verbs -> CRUD actions
+// Create -> POST
+// Retrieve -> GET
+// Update -> PATCH/PUT
+// Delete -> DESTROY
+
 const handleSubmit = (e) => {
+  console.log('handleSubmit fired!!')
     e.preventDefault()
     // how do I extract all of the info from the form -> e.target.NAMEATTRIBUTE.value
     // how do I build ONE object out of it
+
     const newBook = {
         title: e.target.title.value,
         author: e.target.author.value,
@@ -205,8 +215,25 @@ const handleSubmit = (e) => {
         inventory: e.target.inventory.valueAsNumber,
         imageUrl: e.target.imageUrl.value,
     }
-    // what do I do with the object
+
+    //! Pessimistic approach
+    // postJSON(booksUrl, newBook)
+    // .then(createdBook => renderBook(createdBook))
+    // .catch(err => renderError(err))
+    // ==========================
+
+    //! Optimistic approach
     renderBook(newBook)
+    postJSON(booksUrl, newBook)
+    .then(createdBookWithId => booksUl.lastChild.id = createdBookWithId.id)
+    .catch(err => {
+      //! remove newly non-created book from the page
+      booksUl.lastChild.remove()
+      // console.error(err);
+      renderError(err)
+    })
+    // what do I do with the object
+    // renderBook(newBook)
     e.target.reset() // EMPTY THE FORM
 }
 
@@ -216,7 +243,7 @@ bookForm.addEventListener('submit', handleSubmit)
 // 2. Hook up the new Store form so it that it works to add a new store to our database and also to the DOM (as an option within the select tag)
 
 // we're filling in the storeForm with some data
-// for a new store programatically so we don't 
+// for a new store programmatically so we don't 
 // have to fill in the form every time we test
 // the functionality
 fillIn(storeForm, {

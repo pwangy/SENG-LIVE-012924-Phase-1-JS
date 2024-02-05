@@ -29,6 +29,5 @@ function postJSON(url, data) {
       throw (resp.statusText)
     }
   })
-  .catch(err => console.log(err))
   //! the fn returns a promise obj so that anywhere in your code you can use a then
 }
